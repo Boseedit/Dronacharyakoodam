@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dronacharya Koodam — Play School & Early Learning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #FF7043;      /* Joyful Orange */
+      --secondary: #42A5F5;    /* Sky Blue */
+      --accent-green: #66BB6A; /* Fresh Green */
+      --accent-yellow: #FFCA28;/* Sunshine Yellow */
+      --accent-pink: #EC407A;  /* Playful Pink */
+      --bg-light: #F9FAFB;     /* Soft White Background */
+      --text-main: #2C3E50;    /* Dark Blue-Grey for readable text */
+      --text-muted: #64748B;
+      --white: #ffffff;
+      --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg-light);
+      color: var(--text-main);
+      font-family: 'Nunito', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-light); }
+    ::-webkit-scrollbar-thumb { background: var(--accent-yellow); border-radius: 10px; }
+
+    /* ─── NAV ─────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      transition: background 0.4s, box-shadow 0.4s, padding 0.3s;
+    }
+    nav.scrolled {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      padding: 0.8rem 4rem;
+    }
+    .logo-text {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+    .logo-text span { color: var(--secondary); }
+    
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .nav-links a:hover { color: var(--primary); transform: translateY(-2px); display: inline-block; }
+    .nav-cta {
+      background: var(--accent-green);
+      color: var(--white) !important;
+      padding: 0.7rem 1.8rem;
+      border-radius: 30px;
+      box-shadow: 0 4px 15px rgba(102, 187, 106, 0.3);
+    }
+    .nav-cta:hover { background: #57a05b; transform: translateY(-3px) !important; box-shadow: 0 6px 20px rgba(102, 187, 106, 0.4); }
+    
+    .hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; }
+    .hamburger span { display: block; width: 28px; height: 3px; background: var(--primary); border-radius: 3px; transition: 0.3s; }
+
+    /* ─── HERO ────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      background: radial-gradient(circle at 20% 20%, rgba(255, 202, 40, 0.15) 0%, transparent 40%),
+                  radial-gradient(circle at 80% 80%, rgba(66, 165, 245, 0.1) 0%, transparent 40%);
+    }
+    
+    /* Background decorative shapes */
+    .shape { position: absolute; z-index: -1; opacity: 0.6; }
+    .shape-1 { top: 15%; left: 10%; width: 60px; height: 60px; background: var(--accent-pink); border-radius: 50%; animation: float 6s ease-in-out infinite; }
+    .shape-2 { bottom: 20%; right: 15%; width: 80px; height: 80px; background: var(--accent-yellow); border-radius: 20px; transform: rotate(45deg); animation: float 5s ease-in-out infinite reverse; }
+    .shape-3 { top: 30%; right: 10%; width: 40px; height: 40px; background: var(--accent-green); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); animation: float 7s ease-in-out infinite; }
+
+    .hero-main-logo {
+      width: 100%;
+      max-width: 450px;
+      height: auto;
+      margin-bottom: 2rem;
+      animation: gentle-bounce 4s ease-in-out infinite;
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));
+    }
+
+    @keyframes gentle-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .hero-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1.1;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+    .hero-title .accent-1 { color: var(--primary); }
+    .hero-title .accent-2 { color: var(--secondary); }
+    
+    .hero-desc {
+      max-width: 600px;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0 auto 2.5rem;
+      font-weight: 600;
+    }
+    
+    .hero-actions { display: flex; gap: 1.5rem; justify-content: center; }
+    .btn-primary, .btn-outline {
+      padding: 1rem 2.5rem;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: var(--white);
+      box-shadow: 0 8px 20px rgba(255, 112, 67, 0.3);
+    }
+    .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(255, 112, 67, 0.4); background: #f45b2b; }
+    
+    .btn-outline {
+      background: var(--white);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+    .btn-outline:hover { background: var(--primary); color: var(--white); transform: translateY(-4px); }
+
+    /* ─── MARQUEE ─────────────────────────────────── */
+    .marquee-wrap {
+      overflow: hidden;
+      background: var(--accent-yellow);
+      padding: 1.2rem 0;
+      color: var(--text-main);
+    }
+    .marquee-track {
+      display: flex; width: max-content;
+      animation: marquee 25s linear infinite;
+    }
+    .marquee-item {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      padding: 0 2rem;
+      white-space: nowrap;
+      display: flex; align-items: center; gap: 2rem;
+    }
+    .marquee-item .icon { font-size: 1.5rem; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ─── SECTION COMMONS ────────────────────────── */
+    section { padding: 6rem 4rem; }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-tag {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.1rem;
+      color: var(--secondary);
+      background: rgba(66, 165, 245, 0.1);
+      padding: 0.4rem 1.2rem;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .section-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      color: var(--text-main);
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ─── PROGRAMS ────────────────────────────────── */
+    #programs { background: var(--white); }
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+    }
+    .program-card {
+      background: var(--bg-light);
+      padding: 3rem 2rem;
+      border-radius: 30px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 3px solid transparent;
+      box-shadow: var(--card-shadow);
+    }
+    .program-card:hover { transform: translateY(-10px); }
+    .card-1:hover { border-color: var(--primary); }
+    .card-2:hover { border-color: var(--secondary); }
+    .card-3:hover { border-color: var(--accent-green); }
+    
+    .program-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    
+    .program-name {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+    }
+    .program-desc {
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .program-age {
+      display: inline-block;
+      font-weight: 700;
+      color: var(--white);
+      padding: 0.4rem 1rem;
+      border-radius: 15px;
+      font-size: 0.9rem;
+    }
+    .card-1 .program-age { background: var(--primary); }
+    .card-2 .program-age { background: var(--secondary); }
+    .card-3 .program-age { background: var(--accent-green); }
+
+    /* ─── ABOUT ───────────────────────────────────── */
+    #about { background: #FFF9C4; /* Very light yellow */ border-radius: 50px; margin: 2rem; padding: 6rem 4rem;}
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-visual {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 40px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+    }
+    .img-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--bg-light);
+      border-radius: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fredoka', sans-serif; font-size: 1.5rem; color: var(--text-muted);
+      border: 3px dashed #ddd;
+    }
+    .floating-badge {
+      position: absolute; bottom: -20px; right: -20px;
+      background: var(--accent-pink); color: var(--white);
+      width: 120px; height: 120px; border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-family: 'Fredoka', sans-serif; font-weight: 700; text-align: center;
+      box-shadow: 0 10px 20px rgba(236, 64, 122, 0.4);
+      animation: float 4s infinite reverse;
+    }
+    .about-list { list-style: none; margin-top: 2rem; display: flex; flex-direction: column; gap: 1.2rem; }
+    .about-list li {
+      display: flex; align-items: center; gap: 1rem;
+      font-size: 1.1rem; color: var(--text-main); font-weight: 600;
+    }
+    .about-list li::before {
+      content: '⭐';
+      font-size: 1.2rem;
+    }
+
+    /* ─── GALLERY / PORTFOLIO ─────────────────────── */
+    #gallery { background: var(--white); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .gallery-item {
+      aspect-ratio: 1;
+      border-radius: 20px;
+      background: var(--bg-light);
+      overflow: hidden;
+      position: relative;
+      border: 4px solid transparent;
+      transition: all 0.3s;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fredoka', sans-serif;
+      color: var(--text-muted);
+    }
+    .gallery-item:hover {
+      border-color: var(--secondary);
+      transform: scale(1.03);
+    }
+    .g1 { background: #ffebee; } .g2 { background: #e3f2fd; } .g3 { background: #e8f5e9; }
+    .g4 { background: #fff8e1; } .g5 { background: #f3e5f5; } .g6 { background: #e0f7fa; }
+
+    /* ─── TESTIMONIALS ────────────────────────────── */
+    #testimonials { background: var(--bg-light); }
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+    .testi-card {
+      background: var(--white);
+      padding: 2.5rem;
+      border-radius: 30px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+    }
+    .quote-mark {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 4rem; color: rgba(255, 112, 67, 0.2);
+      line-height: 0; position: absolute; top: 40px; right: 30px;
+    }
+    .testi-text {
+      font-size: 1.05rem; color: var(--text-muted); line-height: 1.6;
+      margin-bottom: 2rem; font-weight: 600;
+    }
+    .author-info { display: flex; align-items: center; gap: 1rem; }
+    .author-avatar {
+      width: 50px; height: 50px; border-radius: 50%;
+      background: var(--secondary); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fredoka', sans-serif; font-size: 1.2rem;
+    }
+    .author-name { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; color: var(--text-main); }
+    .author-title { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* ─── CONTACT ─────────────────────────────────── */
+    #contact { background: var(--white); }
+    .contact-wrapper {
+      background: var(--secondary);
+      border-radius: 40px;
+      padding: 4rem;
+      color: var(--white);
+      display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem;
+      box-shadow: 0 20px 40px rgba(66, 165, 245, 0.2);
+    }
+    .contact-title { font-family: 'Fredoka', sans-serif; font-size: 3rem; margin-bottom: 1rem; }
+    .contact-info { display: flex; flex-direction: column; gap: 2rem; margin-top: 3rem; }
+    .contact-item { display: flex; align-items: center; gap: 1.5rem; }
+    .contact-icon {
+      width: 60px; height: 60px; background: rgba(255,255,255,0.2);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+    }
+    .contact-text h4 { font-family: 'Fredoka', sans-serif; font-size: 1.2rem; margin-bottom: 0.3rem; }
+    .contact-form {
+      background: var(--white); padding: 3rem; border-radius: 30px;
+      display: flex; flex-direction: column; gap: 1.5rem;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 1rem 1.5rem;
+      border: 2px solid #e2e8f0; border-radius: 15px;
+      font-family: 'Nunito', sans-serif; font-size: 1rem;
+      outline: none; transition: 0.3s;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
+    .form-btn {
+      background: var(--primary); color: var(--white); border: none;
+      padding: 1.2rem; border-radius: 15px; font-family: 'Fredoka', sans-serif;
+      font-size: 1.1rem; cursor: pointer; transition: 0.3s;
+    }
+    .form-btn:hover { background: #f45b2b; transform: translateY(-3px); }
+
+    /* ─── FOOTER ──────────────────────────────────── */
+    footer {
+      background: var(--bg-light);
+      padding: 4rem 4rem 2rem;
+      text-align: center;
+    }
+    .footer-content { margin-bottom: 2rem; }
+    .footer-logo { font-family: 'Fredoka', sans-serif; font-size: 2rem; color: var(--primary); margin-bottom: 1rem; display: inline-block;}
+    .footer-logo span { color: var(--secondary); }
+    .social-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
+    .social-btn {
+      width: 45px; height: 45px; border-radius: 50%;
+      background: var(--white); color: var(--text-main);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; font-weight: 700; box-shadow: var(--card-shadow);
+      transition: 0.3s;
+    }
+    .social-btn:hover { background: var(--primary); color: var(--white); transform: translateY(-5px); }
+    .footer-bottom { border-top: 2px dashed #ddd; padding-top: 2rem; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; }
+
+    /* ─── MOBILE ──────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      nav.scrolled { padding: 0.8rem 1.5rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-links.open {
+        display: flex; flex-direction: column; justify-content: center;
+        position: fixed; top: 0; right: 0; bottom: 0; width: 80vw;
+        background: var(--white); box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+        z-index: 99;
+      }
+      section { padding: 4rem 1.5rem; }
+      #hero { padding: 8rem 1.5rem 4rem; }
+      .hero-title { font-size: 2.5rem; }
+      .hero-actions { flex-direction: column; }
+      .about-grid, .contact-wrapper { grid-template-columns: 1fr; }
+      .contact-wrapper { padding: 2rem; border-radius: 20px; }
+      .contact-form { padding: 2rem 1.5rem; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      #about { margin: 1rem; padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ────────────────────────────── -->
+<nav id="navbar">
+  <a href="#" class="logo-text">Dronacharya <span>Koodam</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#testimonials">Parents</a></li>
+    <li><a href="#contact" class="nav-cta">Enroll Now</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ─── HERO ───────────────────────────── -->
+<section id="hero">
+  <div class="shape shape-1"></div>
+  <div class="shape shape-2"></div>
+  <div class="shape shape-3"></div>
+  
+  <!-- Large Main Logo Centerpiece -->
+  <img src="C:\Users\jamun\Downloads\Web\Dronacharya PNG LOGO.png" alt="Dronacharya Koodam Logo" class="hero-main-logo">
+  
+  <h1 class="hero-title">
+    Where Little <span class="accent-1">Minds</span><br>
+    Start to <span class="accent-2">Blossom!</span>
+  </h1>
+  <p class="hero-desc">
+    Welcome to Dronacharya Koodam. A joyful, safe, and engaging environment where every child's curiosity is nurtured through play and holistic development.
+  </p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Book a Campus Tour</a>
+    <a href="#programs" class="btn-outline">Explore Programs</a>
+  </div>
+</section>
+
+<!-- ─── MARQUEE ─────────────────────────── -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">LEARN <span class="icon">🎨</span></div>
+    <div class="marquee-item">PLAY <span class="icon">🧸</span></div>
+    <div class="marquee-item">GROW <span class="icon">🌱</span></div>
+    <div class="marquee-item">DISCOVER <span class="icon">🔍</span></div>
+    <div class="marquee-item">CREATE <span class="icon">🖍️</span></div>
+    <!-- Duplicate for infinite loop -->
+    <div class="marquee-item">LEARN <span class="icon">🎨</span></div>
+    <div class="marquee-item">PLAY <span class="icon">🧸</span></div>
+    <div class="marquee-item">GROW <span class="icon">🌱</span></div>
+    <div class="marquee-item">DISCOVER <span class="icon">🔍</span></div>
+    <div class="marquee-item">CREATE <span class="icon">🖍️</span></div>
+  </div>
+</div>
+
+<!-- ─── PROGRAMS ──────────────────────── -->
+<section id="programs">
+  <div class="section-header">
+    <div class="section-tag">Learning Stages</div>
+    <h2 class="section-title">Our Fun Programs</h2>
+    <p class="section-sub">Designed specifically for different stages of your child's early development.</p>
+  </div>
+  <div class="programs-grid">
+    <div class="program-card card-1">
+      <div class="program-icon">👶</div>
+      <h3 class="program-name">Playgroup</h3>
+      <p class="program-desc">A gentle introduction to learning through sensory play, music, and social interaction in a cozy environment.</p>
+      <div class="program-age">Ages 1.5 - 2.5 Years</div>
+    </div>
+    <div class="program-card card-2">
+      <div class="program-icon">🎨</div>
+      <h3 class="program-name">Nursery</h3>
+      <p class="program-desc">Focusing on emotional growth, motor skills, and creative expression through structured play and art.</p>
+      <div class="program-age">Ages 2.5 - 3.5 Years</div>
+    </div>
+    <div class="program-card card-3">
+      <div class="program-icon">📚</div>
+      <h3 class="program-name">Kindergarten</h3>
+      <p class="program-desc">Building foundational academic skills, reading readiness, and independence for the big school journey.</p>
+      <div class="program-age">Ages 3.5 - 5.5 Years</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ──────────────────────────── -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-visual">
+      <div class="img-placeholder">
+        [ Happy Kids Photo ]
+      </div>
+      <div class="floating-badge">
+        <span style="font-size: 2rem;">100%</span>
+        <span style="font-size: 0.8rem;">Joyful</span>
+      </div>
+    </div>
+    <div>
+      <div class="section-tag">About Dronacharya Koodam</div>
+      <h2 class="section-title">Nurturing Through Holistic Development</h2>
+      <p class="section-sub" style="margin: 0; color: var(--text-main); font-weight: 600;">We believe that the earliest years are the most magical. Our curriculum goes beyond basic academics, focusing on therapeutic fine arts and complete child development.</p>
+      <ul class="about-list">
+        <li>Safe, vibrant, and child-friendly campus</li>
+        <li>Trained, caring, and passionate educators</li>
+        <li>Focus on cognitive, physical, and emotional growth</li>
+        <li>Healthy, hygienic, and creative play areas</li>
+      </ul>
+      <a href="#contact" class="btn-primary" style="margin-top:2.5rem; display:inline-block;">Meet Our Teachers</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GALLERY ─────────────────────── -->
+<section id="gallery">
+  <div class="section-header">
+    <div class="section-tag">Memories</div>
+    <h2 class="section-title">A Peek Inside Our World</h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item g1">Activity Image 1</div>
+    <div class="gallery-item g2">Activity Image 2</div>
+    <div class="gallery-item g3">Activity Image 3</div>
+    <div class="gallery-item g4">Activity Image 4</div>
+    <div class="gallery-item g5">Activity Image 5</div>
+    <div class="gallery-item g6">Activity Image 6</div>
+  </div>
+</section>
+
+<!-- ─── TESTIMONIALS ──────────────────── -->
+<section id="testimonials">
+  <div class="section-header">
+    <div class="section-tag">Happy Parents</div>
+    <h2 class="section-title">What Families Say</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="quote-mark">"</div>
+      <p class="testi-text">Dronacharya Koodam has been a blessing. My daughter wakes up excited every morning to go to school. The teachers are incredibly warm and nurturing.</p>
+      <div class="author-info">
+        <div class="author-avatar">P</div>
+        <div>
+          <div class="author-name">Priya S.</div>
+          <div class="author-title">Mother of Ananya</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="quote-mark">"</div>
+      <p class="testi-text">The holistic approach here is fantastic. We've noticed such a positive change in our son's confidence and social skills since he joined the nursery program.</p>
+      <div class="author-info">
+        <div class="author-avatar">R</div>
+        <div>
+          <div class="author-name">Rahul M.</div>
+          <div class="author-title">Father of Vihaan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ───────────────────────── -->
+<section id="contact">
+  <div class="contact-wrapper">
+    <div>
+      <div class="section-tag" style="background: rgba(255,255,255,0.2); color: white;">Join Our Family</div>
+      <h2 class="contact-title">Let's Start Your Child's Journey!</h2>
+      <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;">Have questions about admissions, fees, or want to schedule a visit? Drop us a message, and we'll get back to you with a smile.</p>
+      
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div class="contact-text">
+            <h4>Visit Us</h4>
+            <p>Chennai, Tamil Nadu</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div class="contact-text">
+            <h4>Call Us</h4>
+            <p>+91 (XXX) XXX-XXXX</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div class="contact-text">
+            <h4>Email Us</h4>
+            <p>admissions@dronacharyakoodam.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <form class="contact-form" onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <input type="text" placeholder="Parent's Name" required>
+      </div>
+      <div class="form-group">
+        <input type="text" placeholder="Child's Name & Age" required>
+      </div>
+      <div class="form-group">
+        <input type="email" placeholder="Email Address" required>
+      </div>
+      <div class="form-group">
+        <input type="tel" placeholder="Phone Number" required>
+      </div>
+      <div class="form-group">
+        <textarea rows="4" placeholder="How can we help you?"></textarea>
+      </div>
+      <button type="submit" class="form-btn">Send Inquiry 🎈</button>
+    </form>
+  </div>
+</section>
+
+<!-- ─── FOOTER ────────────────────────── -->
+<footer>
+  <div class="footer-content">
+    <a href="#" class="footer-logo">Dronacharya <span>Koodam</span></a>
+    <p style="color: var(--text-muted); font-weight: 600;">Empowering early childhood through holistic care and therapeutic arts.</p>
+    <div class="social-links">
+      <a href="#" class="social-btn">f</a>
+      <a href="#" class="social-btn">📸</a>
+      <a href="#" class="social-btn">▶</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Dronacharya Koodam, Chennai. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  // ─── NAV SCROLL ───────────────────────
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // ─── HAMBURGER ────────────────────────
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+  });
+
+  // ─── FORM ─────────────────────────────
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.textContent = '🎉 Inquiry Sent!';
+    btn.style.background = 'var(--accent-green)';
+    setTimeout(() => { btn.textContent = 'Send Inquiry 🎈'; btn.style.background = 'var(--primary)'; }, 3000);
+  }
+</script>
+</body>
+</html>
